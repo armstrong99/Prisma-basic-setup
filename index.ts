@@ -8,23 +8,25 @@ const app: Express = express();
 const port: number = 3000;
 
 app.get("/", async (req: Request, res: Response) => {
-
+   
   try {
 
-    let result: Prisma.BatchPayload= await prisma.employee.updateMany({
-      where: {
-        name: "Isaac",
-      },
-      data: {
-        email: "kool@gmail.com",
-      },
-    });
-
-    res.send(`${result} - Data deleted.`);
+      await prisma.employee.create({
+          data: {
+            email: "jacob@gmail.com" + new Date().getSeconds().toString(),
+            name: "Peter Ducker",
+          },
+        });
+      
+        let foundEmployees: employee[] = await prisma.employee.findMany();
+      
+        console.log(foundEmployees)
+      
+        res.send(foundEmployees); 
   } 
   
   catch (e) {
-    console.log((e as Error).message);
+       console.log((e as Error).message)
   }
 
 });
